@@ -18,7 +18,7 @@ const RECOMMENDED_LIMIT = 100000;
 const FALLBACK_IMG = "https://cdn.jsdelivr.net/gh/tharun9772/Bloxcraft-UBG@main/1f3ae.png";
 const LIB_BASE = "https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/libraries/";
 const TOPIC_BASE = "https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/topics/";
-const base = "";
+const base = "https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/main/html";
 const DATA = {
   blox: [], 
   gn: [], 
@@ -700,7 +700,13 @@ async function fetchTopicData(topicId) {
     const json = await res.json();
     const processed = safeArray(json).map(g => {
       const normalizedItem = normalize(g);
-      if (normalizedItem && g.engine) normalizedItem.engine = g.engine.toLowerCase().trim();
+      if (!normalizedItem) return null;
+
+      if (g.engine) normalizedItem.engine = g.engine.toLowerCase().trim();
+
+      const rawUrl = normalizedItem.url || g.url || "";
+      normalizedItem.url = "https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/main/html" + rawUrl;
+
       return normalizedItem;
     }).filter(Boolean);
 
@@ -709,6 +715,7 @@ async function fetchTopicData(topicId) {
   } catch (e) {
     return [];
   }
+}
 }
 
 async function resolveActiveTopicsData() {

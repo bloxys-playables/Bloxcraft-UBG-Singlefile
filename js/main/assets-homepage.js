@@ -2,7 +2,7 @@ async function runVersionCheck() {
   const span = document.getElementById("checkversion");
   if (!span) return false;
 
-  const JSON_URL = "https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/version-bloxcraft-ubg.json";
+  const JSON_URL = "https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/version-bloxcraft-ubg-s.json";
 
   try {
     const versionLine = span.parentElement;
@@ -22,15 +22,15 @@ async function runVersionCheck() {
       v.toLowerCase().replace(/\s+/g, "").replace(/^v\.?/, "");
 
     if (normalize(localVersion) === normalize(remoteVersion)) {
-      span.textContent = "(Latest Version)";
+      span.textContent = "(Latest Version) (Singlefile Version)";
       span.style.color = "limegreen";
     } else {
-      span.textContent = "(Needs An Update)";
+      span.textContent = "(Needs An Update) (Singlefile Version)";
       span.style.color = "red";
     }
 
   } catch {
-    span.textContent = "(ERROR Fetching JSON API)";
+    span.textContent = "(ERROR Fetching JSON API) (Singlefile Version)";
     span.style.color = "yellow";
   }
 

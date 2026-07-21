@@ -18,7 +18,7 @@ const RECOMMENDED_LIMIT = 100000;
 const FALLBACK_IMG = "/1f3ae.png";
 const LIB_BASE = "https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/libraries/";
 const TOPIC_BASE = "https://cdn.jsdelivr.net/gh/tharun9772/game-assets@main/topics/";
-const base = "https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/main/html";
+const base = "";
 const DATA = {
   blox: [], 
   gn: [], 
@@ -153,9 +153,17 @@ async function loadBlox() {
   try {
     const r = await fetch("https://cdn.jsdelivr.net/gh/tharun9772/Bloxcraft-UBG@main/games/blockers.json");
     if (!r.ok) return;
-    DATA.blox = dedupeGames(safeArray(await r.json()).map(normalize).filter(Boolean));
+    const d = await r.json();
+    DATA.blox = dedupeGames(safeArray(d)
+      .filter(g => g && g.name)
+      .map(g => ({
+        name: g.name,
+        img: g.img,
+        url: "https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/main/html" + (g.url || "")
+      })));
   } catch (e) {}
 }
+
 
 async function loadGN() {
   try {

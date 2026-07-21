@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BloxProxy</title>
-
-    <script src="/sail/baremux/index.js"></script>
-    <script src="/sail/scram/scramjet.all.js"></script>
+    <base href="https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/tree/main/html/">
+    <script src="./sail/baremux/index.js"></script>
+    <script src="./sail/scram/scramjet.all.js"></script>
 
     <style>
         * {
@@ -387,12 +387,12 @@ bar.addEventListener("blur", () => { isFocused = false; });
 
         let currentWs = localStorage.getItem("proxy-ws") || defaultWs;
 
-        navigator.serviceWorker.register("/sail/sw.js");
+        navigator.serviceWorker.register("./sail/sw.js");
 
-        const connection = new BareMux.BareMuxConnection("/sail/baremux/worker.js");
+        const connection = new BareMux.BareMuxConnection("./sail/baremux/worker.js");
 
         async function applyTransport() {
-            await connection.setTransport("/sail/libcurl/index.mjs", [
+            await connection.setTransport("./sail/libcurl/index.mjs", [
                 { websocket: currentWs }
             ]);
         }
@@ -403,11 +403,11 @@ bar.addEventListener("blur", () => { isFocused = false; });
 
         const scramjet = new ScramjetController({
             files: {
-                all: "/sail/scram/scramjet.all.js",
-                wasm: "/sail/scram/scramjet.wasm.wasm",
-                sync: "/sail/scram/scramjet.sync.js"
+                all: "./sail/scram/scramjet.all.js",
+                wasm: "./sail/scram/scramjet.wasm.wasm",
+                sync: "./sail/scram/scramjet.sync.js"
             },
-            prefix: "/sail/go/"
+            prefix: "./sail/go/"
         });
 
         scramjet.init();
@@ -415,8 +415,8 @@ bar.addEventListener("blur", () => { isFocused = false; });
         function decodeProxiedUrl(u) {
             if (!u) return "";
             try {
-                if (u.includes("/sail/go/")) {
-                    let part = u.split("/sail/go/")[1] || "";
+                if (u.includes("https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/tree/main/html/sail/go/")) {
+                    let part = u.split("https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/tree/main/html/sail/go/")[1] || "";
                     part = decodeURIComponent(part);
                     return part;
                 }
@@ -624,6 +624,6 @@ setInterval(() => {
             addTab("bloxcraft://newtab");
         });
     </script>
-    <script src="/main-injection.js"></script>
+    <script src="https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/tree/main/js/main/main-injection.js"></script>
 </body>
 </html>

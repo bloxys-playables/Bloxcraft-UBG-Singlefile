@@ -133,7 +133,15 @@ async function fetchLibraryList(lib, jsonName) {
     const r = await fetch(`${LIB_BASE}${lib}/${jsonName}`);
     if (!r.ok) return [];
     const d = await r.json();
-    return dedupeGames(safeArray(d));
+    const processed = safeArray(d).map(g => {
+      if (!g) return null;
+      const rawUrl = g.url || g.URL || "";
+      const url = rawUrl.startsWith("http") 
+        ? rawUrl 
+        : "https://raw.githack.com/bloxys-playables/Bloxcraft-UBG-Singlefile/main/html" + (rawUrl.startsWith("/") ? rawUrl : "/" + rawUrl);
+      return { ...g, url };
+    }).filter(Boolean);
+    return dedupeGames(processed);
   } catch (e) {
     return [];
   }
@@ -163,7 +171,6 @@ async function loadBlox() {
       })));
   } catch (e) {}
 }
-
 
 async function loadGN() {
   try {
@@ -332,10 +339,10 @@ async function loadNowGG() {
       let cleanUrl = g.url.trim();
       if (!cleanUrl.startsWith("http")) cleanUrl = "https://" + cleanUrl;
       return { 
-  name: g.name, 
-  img: g.img || FALLBACK_IMG, 
-  url: base + "/sail/embed/#" + cleanUrl 
-};
+        name: g.name, 
+        img: g.img || FALLBACK_IMG, 
+        url: base + "/sail/embed/#" + cleanUrl 
+      };
     }).filter(Boolean));
   } catch (e) {}
 }
@@ -453,12 +460,12 @@ async function loadFrogies() {
     if (!r.ok) return;
     const d = await r.json();
     DATA.frogies = dedupeGames(
-  safeArray(d).map(g => ({ 
-    name: g.title, 
-    img: g.IMG || FALLBACK_IMG, 
-    url: `${base}/${g.URL.replace(/^\//, '')}` 
-  }))
-);
+      safeArray(d).map(g => ({ 
+        name: g.title, 
+        img: g.IMG || FALLBACK_IMG, 
+        url: `${base}/${g.URL.replace(/^\//, '')}` 
+      }))
+    );
   } catch (e) {}
 }
 
@@ -473,10 +480,10 @@ async function loadUbg42() {
       let imgUrl = g.IMG ? `${base}/${g.IMG}` : FALLBACK_IMG;
       imgUrl = imgUrl.replace(/(https?:\/\/)|(\/)+/g, "$1$2");
       return { 
-  name: g.NAME, 
-  url: `${base}/${g.URL.replace(/^\//, '')}`, 
-  img: imgUrl 
-};
+        name: g.NAME, 
+        url: `${base}/${g.URL.replace(/^\//, '')}`, 
+        img: imgUrl 
+      };
     }).filter(Boolean));
   } catch (e) {}
 }
@@ -715,7 +722,6 @@ async function fetchTopicData(topicId) {
   } catch (e) {
     return [];
   }
-}
 }
 
 async function resolveActiveTopicsData() {

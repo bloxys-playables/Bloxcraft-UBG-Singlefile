@@ -403,11 +403,11 @@ bar.addEventListener("blur", () => { isFocused = false; });
 
         const scramjet = new ScramjetController({
             files: {
-                all: "./sail/scram/scramjet.all.js",
-                wasm: "./sail/scram/scramjet.wasm.wasm",
-                sync: "./sail/scram/scramjet.sync.js"
+                all: "./scram/scramjet.all.js",
+                wasm: "./scram/scramjet.wasm.wasm",
+                sync: "./scram/scramjet.sync.js"
             },
-            prefix: "./sail/go/"
+            prefix: "./go/"
         });
 
         scramjet.init();

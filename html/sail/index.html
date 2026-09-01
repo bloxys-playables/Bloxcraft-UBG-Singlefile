@@ -386,12 +386,12 @@ bar.addEventListener("blur", () => { isFocused = false; });
 
         let currentWs = localStorage.getItem("proxy-ws") || defaultWs;
 
-        navigator.serviceWorker.register("./sail/sw.js");
+        navigator.serviceWorker.register("./sw.js");
 
-        const connection = new BareMux.BareMuxConnection("./sail/baremux/worker.js");
+        const connection = new BareMux.BareMuxConnection("./baremux/worker.js");
 
         async function applyTransport() {
-            await connection.setTransport("./sail/libcurl/index.mjs", [
+            await connection.setTransport("./libcurl/index.mjs", [
                 { websocket: currentWs }
             ]);
         }
